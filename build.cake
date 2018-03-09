@@ -2,9 +2,10 @@
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
+//Release mode only respond to power-shell file configuration
 
 var target = Argument("target", "Default");
-var configuration = Argument("configuration", "Debug");
+var configuration = Argument("configuration", "Release");
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
@@ -67,6 +68,13 @@ Task("Create-NuGet-Package")
     .IsDependentOn("Run-Unit-Tests")
     .Does(() =>
 {
+
+	var dir = "./ProjectNugetPackages";
+	if (!DirectoryExists(dir))
+	{
+		CreateDirectory(dir);
+	}
+	
    var nuGetPackSettings = new NuGetPackSettings {
             Id                      = "E-Vision-Exercise",
             Version                 = "1.0.1",
