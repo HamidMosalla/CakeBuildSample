@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace E_Vision_Exercise
+﻿namespace EVisionExercise
 {
     public interface IAccountService
     {
