@@ -17,7 +17,6 @@ namespace UnitTests
             _fakeAccountService = A.Fake<IAccountService>();
             _accountId = 2;
             _sut = new AccountInfo(_accountId, _fakeAccountService);
-
         }
 
         [Fact]
@@ -37,6 +36,15 @@ namespace UnitTests
             _sut.RefreshAmount();
 
             _sut.Amount.Should().Be(amount);
+        }
+
+        [Fact]
+        public void RefeshAmount_WhenCalled_PassesTheCorrectAccountIdToGetAccountAmountMethod()
+        {
+            _sut.RefreshAmount();
+
+            A.CallTo(() => _fakeAccountService.GetAccountAmount(A<int>.That.Matches(a => a == _accountId)))
+                .MustHaveHappened(Repeated.Exactly.Once);
         }
     }
 }
