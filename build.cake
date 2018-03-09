@@ -62,12 +62,37 @@ Task("Run-Unit-Tests")
         }
 });
 
+
+Task("Create-NuGet-Package")
+    .IsDependentOn("Run-Unit-Tests")
+    .Does(() =>
+{
+   var nuGetPackSettings = new NuGetPackSettings {
+            Id                      = "E-Vision-Exercise",
+            Version                 = "1.0.1",
+            Title                   = "E-Vision-Exercise",
+			Description             = "E-Vision-Exercise",
+            Summary                 = "E-Vision-Exercise",
+            Authors                 = new[] {"Hamid Mosalla"},
+            Owners                  = new[] {"Evision"},
+            RequireLicenseAcceptance= false,
+            Symbols                 = false,
+            NoPackageAnalysis       = true,
+            Files                   = new [] { new NuSpecContent {  Source = "EVisionExercise.dll", Target = "bin"} },
+            BasePath                = "./E-Vision-Exercise/bin/Release/netcoreapp2.0",
+            OutputDirectory         = "./ProjectNugetPackages"
+                            };
+
+    NuGetPack(nuGetPackSettings);
+});
+
+
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("Run-Unit-Tests");
+    .IsDependentOn("Create-NuGet-Package");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
