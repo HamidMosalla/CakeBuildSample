@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using EVisionExercise;
 using FakeItEasy;
 using FluentAssertions;
@@ -44,6 +46,34 @@ namespace UnitTests
             _sut.RefreshAmount();
 
             A.CallTo(() => _fakeAccountService.GetAccountAmount(A<int>.That.Matches(a => a == _accountId)))
+                .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Fact]
+        public async Task RefreshAmountAsync_WhenCalled_SuccessfulyCallsGetAccountAmountMethod()
+        {
+            await _sut.RefreshAmountAsync();
+
+            A.CallTo(() => _fakeAccountService.GetAccountAmountAsync(A<int>._)).MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Fact]
+        public async Task RefreshAmountAsync_WhenCalled_CorrectlySetTheAmountValue()
+        {
+            const double amount = 4.0;
+            A.CallTo(() => _fakeAccountService.GetAccountAmountAsync(A<int>.Ignored)).Returns(amount);
+
+            await _sut.RefreshAmountAsync();
+
+            _sut.Amount.Should().Be(amount);
+        }
+
+        [Fact]
+        public async Task RefreshAmountAsync_WhenCalled_PassesTheCorrectAccountIdToGetAccountAmountMethod()
+        {
+            await _sut.RefreshAmountAsync();
+
+            A.CallTo(() => _fakeAccountService.GetAccountAmountAsync(A<int>.That.Matches(a => a == _accountId)))
                 .MustHaveHappened(Repeated.Exactly.Once);
         }
     }

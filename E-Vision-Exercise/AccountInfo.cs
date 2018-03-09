@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,24 +11,38 @@ namespace EVisionExercise
     {
         private readonly int _accountId;
         private readonly IAccountService _accountService;
-        static SemaphoreSlim _sem = new SemaphoreSlim(1);
+        static readonly SemaphoreSlim _sem = new SemaphoreSlim(1);
+
+        public double Amount { get; private set; }
+
         public AccountInfo(int accountId, IAccountService accountService)
         {
             _accountId = accountId;
             _accountService = accountService;
         }
-        public double Amount { get; private set; }
 
         public void RefreshAmount()
         {
             Amount = _accountService.GetAccountAmount(_accountId);
         }
 
-        public async void RefreshAmountAsync()
+        public async Task RefreshAmountAsync()
         {
-            _sem.Wait();
-            Amount = await _accountService.GetAccountAmountAsync(_accountId);
-            _sem.Release();
+            try
+            {
+                await _sem.WaitAsync();
+                Amount = await _accountService.GetAccountAmountAsync(_accountId);
+            }
+            catch (Exception ex)
+            {
+                //maybe a more proper logging here
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+            finally
+            {
+                _sem.Release();
+            }
         }
     }
 }
