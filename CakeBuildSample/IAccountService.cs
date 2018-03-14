@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace EVisionExercise
+namespace CakeBuildSample
 {
     public interface IAccountService
     {

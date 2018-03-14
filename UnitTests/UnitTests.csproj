@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\E-Vision-Exercise\EVisionExercise.csproj" />
+    <ProjectReference Include="..\CakeBuildSample\CakeBuildSample.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using EVisionExercise;
+using CakeBuildSample;
 using FakeItEasy;
 using FluentAssertions;
 using Xunit;

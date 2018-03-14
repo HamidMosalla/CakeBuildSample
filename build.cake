@@ -12,7 +12,7 @@ var configuration = Argument("configuration", "Release");
 //////////////////////////////////////////////////////////////////////
 
 // Define directories.
-var buildDir = Directory("./E-Vision-Exercise/bin") + Directory(configuration);
+var buildDir = Directory("./CakeBuildSample/bin") + Directory(configuration);
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -27,7 +27,7 @@ Task("Restore-NuGet-Packages")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    NuGetRestore("./E-Vision-Exercise.sln");
+    NuGetRestore("./CakeBuildSample.sln");
 });
 
 Task("Build")
@@ -37,13 +37,13 @@ Task("Build")
     if(IsRunningOnWindows())
     {
       // Use MSBuild
-      MSBuild("./E-Vision-Exercise.sln", settings =>
+      MSBuild("./CakeBuildSample.sln", settings =>
         settings.SetConfiguration(configuration));
     }
     else
     {
       // Use XBuild
-      XBuild("./E-Vision-Exercise.sln", settings =>
+      XBuild("./CakeBuildSample.sln", settings =>
         settings.SetConfiguration(configuration));
     }
 });
@@ -76,18 +76,18 @@ Task("Create-NuGet-Package")
 	}
 	
    var nuGetPackSettings = new NuGetPackSettings {
-            Id                      = "E-Vision-Exercise",
+            Id                      = "CakeBuildSample",
             Version                 = "1.0.1",
-            Title                   = "E-Vision-Exercise",
-			Description             = "E-Vision-Exercise",
-            Summary                 = "E-Vision-Exercise",
+            Title                   = "CakeBuildSample",
+			Description             = "CakeBuildSample",
+            Summary                 = "CakeBuildSample",
             Authors                 = new[] {"Hamid Mosalla"},
-            Owners                  = new[] {"Evision"},
+            Owners                  = new[] {"CakeBuildSample"},
             RequireLicenseAcceptance= false,
             Symbols                 = false,
             NoPackageAnalysis       = true,
-            Files                   = new [] { new NuSpecContent {  Source = "EVisionExercise.dll", Target = "bin"} },
-            BasePath                = "./E-Vision-Exercise/bin/Release/netcoreapp2.0",
+            Files                   = new [] { new NuSpecContent {  Source = "CakeBuildSample.dll", Target = "bin"} },
+            BasePath                = "./CakeBuildSample/bin/Release/netcoreapp2.0",
             OutputDirectory         = "./ProjectNugetPackages"
                             };
 
